@@ -9,4 +9,3 @@
     * `n`: Next page
     * `p`: Previous page
     * `q`: Quit presentation
-
