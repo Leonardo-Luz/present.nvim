@@ -80,7 +80,7 @@ local create_window_config = function()
       opts = {
         relative = "editor",
         style = "minimal",
-        zindex = 3,
+        zindex = 99,
         width = width,
         height = header_height,
         col = 0,
@@ -97,7 +97,7 @@ local create_window_config = function()
       opts = {
         relative = "editor",
         style = "minimal",
-        zindex = 2,
+        zindex = 98,
         width = width - 10,
         height = body_height,
         col = 10,
@@ -113,7 +113,7 @@ local create_window_config = function()
       opts = {
         relative = "editor",
         style = "minimal",
-        zindex = 3,
+        zindex = 99,
         width = width,
         height = footer_height,
         col = 0,
@@ -183,10 +183,13 @@ M.start_presentation = function(opts)
       return
     end
 
-    local padding = string.rep(" ", (state.float.header.opts.width - #slide.title) / 2)
-    local title = padding .. slide.title
+    local title_text = #slide.title == 0 and "" or "`" .. vim.trim(slide.title:gsub("#", "")) .. "`"
 
-    local footer = string.format("  %s | %d / %d", state.title, id, #state.parsed.slides)
+    local padding = string.rep(" ", (state.float.header.opts.width - #title_text) / 2 - 1)
+
+    local title = "#" .. padding .. title_text
+
+    local footer = string.format("  %s | %d / %d", title_text, id, #state.parsed.slides)
 
     vim.api.nvim_buf_set_lines(state.float.footer.floating.buf, 0, -1, false, { footer })
     vim.api.nvim_buf_set_lines(state.float.header.floating.buf, 0, -1, false, { title })
